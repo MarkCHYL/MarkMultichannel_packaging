@@ -1,0 +1,80 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 27
+    defaultConfig {
+        applicationId "com.mark.exe.markmulti_channel_packaging"
+        minSdkVersion 15
+        targetSdkVersion 27
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+//        multiDexEnable true //突破应用方法 65535 的一个限制
+        manifestPlaceholders = [UMENG_CHANNEL_VALUE: "default_channel"]
+        flavorDimensions "versionCode"
+    }
+
+    signingConfigs {
+        debug {}
+        release {
+            keyAlias 'mark'
+            keyPassword '123456'
+            storeFile file('/Users/mark/Desktop/AndroidProjects/MarkMultichannel_packaging/app/muti_channel')
+            storePassword '123456'
+        }
+    }
+    buildTypes {
+        release {
+            minifyEnabled true //不启用混淆
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+            //指定打包后应用名称
+            android.applicationVariants.all { variant ->
+                variant.outputs.all {
+                    outputFileName = "${variant.productFlavors[0].name}" + ".apk"
+                }
+            }
+        }
+        //gradle assembleRelease
+
+    }
+    productFlavors {
+        wandoujia {
+//            resValue 'strings', 'app_name', "wandoujia"
+        }
+        _360 {}
+        yingyongbao {}
+        xiaomi {}
+        baidu {}
+        huawei {}
+        jifeng {}
+
+        //根据功能点进行打包
+        okhttp{
+            //添加包名后缀
+            applicationIdSuffix "okhttp"
+//            resValue 'string', 'app_name', "okhttp"
+        }
+        jpush{
+            //添加包名后缀
+            applicationIdSuffix "jpush"
+//            resValue 'string', 'app_name', "jpush"
+        }
+    }
+
+    productFlavors.all { flavor ->
+        flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+    }
+}
+
+dependencies {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    implementation 'com.android.support:appcompat-v7:27.1.1'
+    implementation 'com.android.support.constraint:constraint-layout:1.1.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    //#注意：统计SDK必须依赖基础组件库,所以需要加入对应依赖
+    implementation 'com.umeng.sdk:common:1.5.1'
+    implementation 'com.umeng.sdk:analytics:7.5.0'
+}
