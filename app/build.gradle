@@ -39,26 +39,26 @@ android {
 
     }
     productFlavors {
-        wandoujia {
-//            resValue 'strings', 'app_name', "wandoujia"
-        }
-        _360 {}
-        yingyongbao {}
-        xiaomi {}
-        baidu {}
-        huawei {}
-        jifeng {}
+//        wandoujia {
+////            resValue 'strings', 'app_name', "wandoujia"
+//        }
+//        _360 {}
+//        yingyongbao {}
+//        xiaomi {}
+//        baidu {}
+//        huawei {}
+//        jifeng {}
 
         //根据功能点进行打包
         okhttp{
             //添加包名后缀
             applicationIdSuffix "okhttp"
-//            resValue 'string', 'app_name', "okhttp"
+            resValue 'string', 'app_name', "okhttp"
         }
         jpush{
             //添加包名后缀
             applicationIdSuffix "jpush"
-//            resValue 'string', 'app_name', "jpush"
+            resValue 'string', 'app_name', "jpush"
         }
     }
 
